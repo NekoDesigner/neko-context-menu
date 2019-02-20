@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test</title>
+    <script src="context-menu.js"></script>
+</head>
+<body>
+
+    <ul>
+        <li data-level="context-menu">lorem</li>
+        <li data-level="context-menu">lorem</li>
+        <li data-level="context-menu">lorem</li>
+        <li data-level="context-menu">lorem</li>
+        <li data-level="context-menu">lorem</li>
+    </ul>
+
+    <script>
+        var ContextMenu = new NekoContextMenu({
+            selector: '[data-level="context-menu"]',
+            items: [
+                {
+                    name: "New folder",
+                    callback: function (evt, ui) {
+                        evt.preventDefault();
+                        alert('New folder called !');
+                    },
+                    icon: 'fas fa-folder'
+                },
+                {
+                    name: "Rename",
+                    callback: function (evt, ui) {
+                        alert('Rename called !');
+                    },
+                    icon: 'fas fa-edit'
+                },
+                {
+                    name: "Details",
+                    callback: function (evt, ui) {
+                        alert('Details called !');
+                    },
+                    icon: 'fas fa-eye'
+                },
+                {
+                    name: "Delete",
+                    callback: function (evt, ui) {
+                        alert('delete called');
+                    },
+                    icon: 'fas fa-trash'
+                }
+            ]
+        });
+    </script>
+</body>
+</html>
