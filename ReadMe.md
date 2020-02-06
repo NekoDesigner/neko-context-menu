@@ -1,3 +1,7 @@
+# Neko Context Menu
+
+![alt Preview](https://zupimages.net/up/20/06/zmmk.gif)
+
 # Intallation
 
 Install package
@@ -143,6 +147,10 @@ The icon key is optionnal. It using class of FontAwesome. Please import it befor
 ## Methods
 
 You can refresh NekoContextMenu listeners. it's very useful if you add some elements dynamically in the DOM.
+
+```js
+ContextMenu.refresh()
+```
 
 ## Getters
 
