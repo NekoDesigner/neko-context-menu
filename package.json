@@ -1,6 +1,6 @@
 {
   "name": "neko-context-menu",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Open a contextual menu on elements.",
   "main": "index.js",
   "scripts": {
