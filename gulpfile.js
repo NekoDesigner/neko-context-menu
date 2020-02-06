@@ -9,7 +9,7 @@ function css() {
     return src('./src/*.scss')
     .pipe(sass())
     .pipe(minifyCSS())
-    .pipe(dest('./dist'))
+    .pipe(dest('dist'))
 }
 
 function es6() {
