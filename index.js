@@ -1,1 +1,1 @@
-module.exports = require('./dist/context-menu-min');
+module.exports = require('./dist/context-menu');

@@ -1,31 +1,73 @@
-function NekoContextMenu(options) {
+class NekoContextMenu {
 
-    const $this = this;
+    constructor(options) {
 
-    let settings = $.extend({
+        if(!window.$) console.error('[NEKO CONTEXT MENU]', "This plugin need JQuery.")
+    
+        this.settings = $.extend({
+    
+            selector: 'div.context',
+            items: [{
+                name: 'ajouter',
+                callback: null,
+                icon: null
+            }]
+    
+        }, options);
 
-        selector: 'div.context',
-        items: [
-            { name: 'ajouter', callback: null, icon: null }
-        ]
+        this.selector = this.settings.selector;
 
-    }, options);
+        this._init();
 
-    function generateContextMenu(ui) {
+        $('body').on('click', function () {
+            $('.contextMenu_nekodev').remove();
+        });
+
+    }
+
+    refresh() {
+        this._init()
+    }
+
+    _init() {
+        $(this.settings.selector).contextmenu((event) => {
+            let parent = $(event.target).closest(this.settings.selector);
+            event.preventDefault();
+            event.stopPropagation();
+            let ui = $(event.target)
+            $('.contextMenu_nekodev').remove();
+
+            let contextMenu = this._generateContextMenu(ui, parent);
+
+            const x = event.pageX;
+            const y = event.pageY;
+
+            contextMenu.css({
+                left: x,
+                top: y
+            });
+
+            $('body').append(contextMenu);
+
+            return false;
+        });
+    }
+
+    _generateContextMenu(ui, target) {
         let div = $('<div></div>');
         let content = $('<div></div>');
         let ul = $('<ul></ul>');
-        for (let i = 0; i < settings.items.length; i++) {
+        for (let i = 0; i < this.settings.items.length; i++) {
             let li = $('<li></li>');
             let ic = $('<i></i>');
-            if ('icon' in settings.items[i] && settings.items[i].icon != null) {
-                ic.addClass(settings.items[i].icon);
+            if ('icon' in this.settings.items[i] && this.settings.items[i].icon != null) {
+                ic.addClass(this.settings.items[i].icon);
                 ic.addClass("contextMenuIcon");
             }
-            li.text(settings.items[i].name);
+            li.text(this.settings.items[i].name);
             li.prepend(ic);
-            li.click(function (evt) {
-                settings.items[i].callback(evt, ui);
+            li.click((evt) => {
+                this.settings.items[i].callback(evt, ui, target);
             });
 
             ul.append(li);
@@ -40,30 +82,6 @@ function NekoContextMenu(options) {
         return div;
     }
 
-    $('body').click(function () {
-        $('.contextMenu_nekodev').remove();
-    });
-
-    $(settings.selector).contextmenu(function (event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-        let ui = $(event.target)
-        $('.contextMenu_nekodev').remove();
-
-        let contextMenu = generateContextMenu(ui);
-
-        const x = event.pageX;
-        const y = event.pageY;
-
-        contextMenu.css({
-            left: x,
-            top: y
-        });
-
-        $('body').append(contextMenu);
-
-        return false;
-    });
-
 }
+
+export default NekoContextMenu;

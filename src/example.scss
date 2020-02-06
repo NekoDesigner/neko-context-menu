@@ -1,0 +1,77 @@
+@import './neko-context-menu.scss';
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(./img/horse-4810484_1920.jpg);
+    background-size: cover;
+}
+
+p, span, li, h1 {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-size: 5rem;
+    margin: 1rem 0;
+    color: #fff;
+}
+
+[data-context="main"] {
+    padding: 1rem 2rem;
+    border-radius: .2rem;
+    background-color: rgba($color: #000000, $alpha: .5);
+    margin-bottom: 1rem;
+    animation: scale-in .5s ease-in-out;
+    p {
+        color: #fff;
+        margin: 1rem 0;
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+}
+
+#credit {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(#fff, .5);
+    padding: 1rem;
+    border-radius: .2rem;
+     font-family: 'Roboto',
+     sans-serif;
+}
+
+p.text-dark {
+    padding: 0.5rem;
+    background-color: #fff;
+    color: #000;
+    margin: 0;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+    &:hover {
+        background-color: #000;
+        color: #fff;
+    }
+}
+
+@keyframes scale-in {
+    from {
+        transform: scale(0) translateY(-200px);
+    }
+    to {
+        transform: scale(1) translateY(0);
+    }
+}

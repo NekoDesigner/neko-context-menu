@@ -1,69 +1,76 @@
-function NekoContextMenu(options) {
+"use strict";
 
-    const $this = this;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-    let settings = $.extend({
+var _this = void 0;
 
-        selector: 'div.context',
-        items: [
-            { name: 'ajouter', callback: null, icon: null }
-        ]
+var NekoContextMenu = function NekoContextMenu(options) {
+  if (!window.$) console.error('[NEKO CONTEXT MENU]', "This plugin need JQuery.");
+  var $this = _this;
+  var settings = $.extend({
+    selector: 'div.context',
+    items: [{
+      name: 'ajouter',
+      callback: null,
+      icon: null
+    }]
+  }, options);
 
-    }, options);
+  function generateContextMenu(ui) {
+    var div = $('<div></div>');
+    var content = $('<div></div>');
+    var ul = $('<ul></ul>');
 
-    function generateContextMenu(ui) {
-        let div = $('<div></div>');
-        let content = $('<div></div>');
-        let ul = $('<ul></ul>');
-        for (let i = 0; i < settings.items.length; i++) {
-            let li = $('<li></li>');
-            let ic = $('<i></i>');
-            if ('icon' in settings.items[i] && settings.items[i].icon != null) {
-                ic.addClass(settings.items[i].icon);
-                ic.addClass("contextMenuIcon");
-            }
-            li.text(settings.items[i].name);
-            li.prepend(ic);
-            li.click(function (evt) {
-                settings.items[i].callback(evt, ui);
-            });
+    var _loop = function _loop(i) {
+      var li = $('<li></li>');
+      var ic = $('<i></i>');
 
-            ul.append(li);
-        }
+      if ('icon' in settings.items[i] && settings.items[i].icon != null) {
+        ic.addClass(settings.items[i].icon);
+        ic.addClass("contextMenuIcon");
+      }
 
-        content.append(ul);
-        div.append(content);
+      li.text(settings.items[i].name);
+      li.prepend(ic);
+      li.click(function (evt) {
+        settings.items[i].callback(evt, ui);
+      });
+      ul.append(li);
+    };
 
-        div.addClass('contextMenu_nekodev');
-        content.addClass('content');
-
-        return div;
+    for (var i = 0; i < settings.items.length; i++) {
+      _loop(i);
     }
 
-    $('body').click(function () {
-        $('.contextMenu_nekodev').remove();
+    content.append(ul);
+    div.append(content);
+    div.addClass('contextMenu_nekodev');
+    content.addClass('content');
+    return div;
+  }
+
+  $('body').click(function () {
+    $('.contextMenu_nekodev').remove();
+  });
+  $(settings.selector).contextmenu(function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var ui = $(event.target);
+    $('.contextMenu_nekodev').remove();
+    var contextMenu = generateContextMenu(ui);
+    var x = event.pageX;
+    var y = event.pageY;
+    contextMenu.css({
+      left: x,
+      top: y
     });
+    $('body').append(contextMenu);
+    return false;
+  });
+};
 
-    $(settings.selector).contextmenu(function (event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-        let ui = $(event.target)
-        $('.contextMenu_nekodev').remove();
-
-        let contextMenu = generateContextMenu(ui);
-
-        const x = event.pageX;
-        const y = event.pageY;
-
-        contextMenu.css({
-            left: x,
-            top: y
-        });
-
-        $('body').append(contextMenu);
-
-        return false;
-    });
-
-}
+var _default = NekoContextMenu;
+exports["default"] = _default;

@@ -1,9 +1,11 @@
 {
   "name": "neko-context-menu",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Open a contextual menu on elements.",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "gulp es6 css js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -13,10 +15,16 @@
   "author": "NekoDev <tahar.chibane@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
     "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^3.0.1",
     "gulp-minify": "^3.1.0",
     "gulp-sass": "^4.0.2"
+  },
+  "dependencies": {
+    "random-sentence": "^1.0.4"
   }
 }
