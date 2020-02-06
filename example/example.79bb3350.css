@@ -58,7 +58,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-image: url(/horse-4810484_1920.5e4b87c4.jpg);
+  background-image: url(horse-4810484_1920.5e4b87c4.jpg);
   background-size: cover; }
 
 p, span, li, h1 {
@@ -88,7 +88,8 @@ h1 {
   background: rgba(255, 255, 255, 0.5);
   padding: 1rem;
   border-radius: .2rem;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Roboto',
+ sans-serif; }
 
 p.text-dark {
   padding: 0.5rem;

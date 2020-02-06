@@ -15,8 +15,6 @@ class NekoContextMenu {
     
         }, options);
 
-        this.selector = this.settings.selector;
-
         this._init();
 
         $('body').on('click', function () {
@@ -30,6 +28,7 @@ class NekoContextMenu {
     }
 
     _init() {
+        this.selector = $(this.settings.selector);
         $(this.settings.selector).contextmenu((event) => {
             let parent = $(event.target).closest(this.settings.selector);
             event.preventDefault();

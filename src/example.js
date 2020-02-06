@@ -70,9 +70,10 @@ function createContainer() {
 }
 
 function removeContainer(parent, evt) {
-    let elements = $(ContextMenu.selector).length
+    let elements = ContextMenu.selector.length
     if (elements > 1) {
         $(parent).remove()
+        ContextMenu.refresh()
     } else {
         alert("C'est le dernier conteneur !")
     }

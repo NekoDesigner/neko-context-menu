@@ -1,1 +1,1 @@
-module.exports = require('./dist/context-menu');
+module.exports = require('./dist/neko-context-menu');
