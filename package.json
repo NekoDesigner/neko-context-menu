@@ -4,8 +4,8 @@
   "description": "Open a contextual menu on elements.",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "gulp es6 css js",
+    "dev": "parcel -p 1234 src/index.html",
+    "build": "gulp es6 css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -22,9 +22,11 @@
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^3.0.1",
     "gulp-minify": "^3.1.0",
-    "gulp-sass": "^4.0.2"
+    "gulp-sass": "^4.0.2",
+    "parcel": "^1.12.4"
   },
   "dependencies": {
+    "jquery": "^3.5.1",
     "random-sentence": "^1.0.4"
   }
 }

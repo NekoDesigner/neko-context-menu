@@ -1,7 +1,7 @@
 @import "https://use.fontawesome.com/releases/v5.7.2/css/all.css";
 
 .contextMenu_nekodev {
-    position: absolute;
+    position: fixed;
     box-sizing: border-box;
     z-index: 999;
 }

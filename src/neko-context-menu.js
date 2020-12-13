@@ -1,86 +1,224 @@
-class NekoContextMenu {
 
-    constructor(options) {
+/**
+ *
+ * @author NekoDev<tahar.chibane@gmail.com>
+ * @class NContextMenu
+ */
+class NContextMenu {
 
-        if(!window.$) console.error('[NEKO CONTEXT MENU]', "This plugin need JQuery.")
-    
-        this.settings = $.extend({
-    
-            selector: 'div.context',
-            items: [{
-                name: 'ajouter',
-                callback: null,
-                icon: null
-            }]
-    
-        }, options);
+    /**
+     * Creates an instance of NContextMenu.
+     * 
+     * @param {HTMLElement|string} target
+     * @memberof NContextMenu
+     */
+    constructor(target) {
+        this.openHandler = this.open.bind(this)
+        this.closeHandler = this.close.bind(this)
 
-        this._init();
+        this.load(target)
+            .events()
 
-        $('body').on('click', function () {
-            $('.contextMenu_nekodev').remove();
-        });
+        this.items = []
 
     }
 
+    /**
+     *
+     *
+     * @param {HTMLElement|string} target
+     * @return {NContextMenu} 
+     * @memberof NContextMenu
+     */
+    load(target) {
+        this.target = typeof target === 'string' ? document.querySelector(target) : target
+
+        return this
+    }
+
+    /**
+     *
+     *
+     * @return {NContextMenu} 
+     * @memberof NContextMenu
+     */
     refresh() {
-        this._init()
+
+        this.target.removeEventListener('contextmenu', this.openHandler)
+        document.body.removeEventListener('click', this.closeHandler)
+        document.removeEventListener('close-context-menu', this.closeHandler)
+
+        this.load().events()
+
+        return this
+
     }
 
-    _init() {
-        this.selector = $(this.settings.selector);
-        $(this.settings.selector).contextmenu((event) => {
-            let parent = $(event.target).closest(this.settings.selector);
-            event.preventDefault();
-            event.stopPropagation();
-            let ui = $(event.target)
-            $('.contextMenu_nekodev').remove();
+    /**
+     *
+     *
+     * @return {NContextMenu} 
+     * @memberof NContextMenu
+     */
+    events() {
+        this.target.addEventListener('contextmenu', this.openHandler)
+        document.body.addEventListener('click', this.closeHandler)
+        document.addEventListener('close-context-menu', this.closeHandler)
 
-            let contextMenu = this._generateContextMenu(ui, parent);
-
-            const x = event.pageX;
-            const y = event.pageY;
-
-            contextMenu.css({
-                left: x,
-                top: y
-            });
-
-            $('body').append(contextMenu);
-
-            return false;
-        });
+        return this
     }
 
-    _generateContextMenu(ui, target) {
-        let div = $('<div></div>');
-        let content = $('<div></div>');
-        let ul = $('<ul></ul>');
-        for (let i = 0; i < this.settings.items.length; i++) {
-            let li = $('<li></li>');
-            let ic = $('<i></i>');
-            if ('icon' in this.settings.items[i] && this.settings.items[i].icon != null) {
-                ic.addClass(this.settings.items[i].icon);
-                ic.addClass("contextMenuIcon");
-            }
-            li.text(this.settings.items[i].name);
-            li.prepend(ic);
-            li.click((evt) => {
-                this.settings.items[i].callback(evt, ui, target);
-            });
+    /**
+     *
+     *
+     * @param {MenuItem} menuItem
+     * @return {NContextMenu}
+     * @memberof NContextMenu
+     */
+    add(menuItem) {
+        this.items = [...this.items, menuItem]
 
-            ul.append(li);
+        return this
+    }
+
+
+    /**
+     *
+     *
+     * @param {MenuItem|number} menuItem
+     * @return {NContextMenu}
+     * @memberof NContextMenu
+     */
+    remove(menuItem) {
+
+        let index = null
+
+        if (typeof menuItem == 'object') {
+            index = this.items.indexOf(menuItem)
+        } else {
+            index = menuItem
         }
 
-        content.append(ul);
-        div.append(content);
+        if (index > -1) this.items.splice(index, 1)
 
-        div.addClass('contextMenu_nekodev');
-        content.addClass('content');
+        return this
 
-        return div;
+    }
+
+    /**
+     *
+     *
+     * @param {MouseEvent} e
+     * @memberof NContextMenu
+     */
+    open(e) {
+        e.preventDefault()
+        this.createWindow(e.clientX, e.clientY)
+    }
+
+    /**
+     *
+     *
+     * @memberof NContextMenu
+     */
+    close() {
+        this.removeWindow()
+    }
+
+    /**
+     *
+     *
+     * @param {number} x
+     * @param {number} y
+     * @memberof NContextMenu
+     */
+    createWindow(x, y) {
+
+        document.dispatchEvent(new Event('close-context-menu'))
+
+        this.window = document.createElement('div')
+        this.window.className = 'contextMenu_nekodev'
+
+        this.window.innerHTML = `
+            <div class="content">
+                <ul>
+                </ul>
+            </div>
+        `
+
+        document.body.appendChild(this.window)
+
+        this.items.map(item => {
+            let el = item.createItem(this.target, item)
+            this.window.querySelector('ul').appendChild(el)
+        })
+
+        this.window.style.left = x + 'px'
+        this.window.style.top = y + 'px'
+
+    }
+
+    /**
+     *
+     *
+     * @memberof NContextMenu
+     */
+    removeWindow() {
+        if (this.window) this.window.remove()
     }
 
 }
 
-export default NekoContextMenu;
+/**
+ *
+ *
+ * @author NekoDev<tahar.chibane@gmail.com>
+ * @class MenuItem
+ */
+class MenuItem {
+
+    /**
+     * Creates an instance of MenuItem.
+     * 
+     * @param {string} label
+     * @param {Function} callback
+     * @param {string} [icon=null]
+     * @memberof MenuItem
+     */
+    constructor(label, callback, icon = null) {
+        this.label = label
+        this.callback = callback
+        this.icon = icon
+    }
+
+    /**
+     *
+     *
+     * @param {HTMLElement} target
+     * @param {MenuItem} item
+     * @return {HTMLElement} 
+     * @memberof MenuItem
+     */
+    createItem(target, item) {
+        let li = document.createElement('li')
+
+        if (this.icon) {
+            let span = document.createElement('span')
+            span.className = "contextMenuIcon"
+            span.innerHTML = this.icon
+            li.appendChild(span)
+        }
+
+        li.innerHTML += this.label
+
+        li.addEventListener('click', evt => {
+            evt.preventDefault()
+            this.callback(evt, { target, item })
+        })
+
+        return li
+    }
+}
+
+export default NContextMenu
+export { MenuItem }

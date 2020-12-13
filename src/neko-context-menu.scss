@@ -1,10 +1,11 @@
-$dark: #343A40;
+ $neko-context-menu-color: #343A40 !default;
+ $neko-context-menu-background-color: #FFFFFF !default;
 
 .contextMenu_nekodev {
-    position: absolute;
+    position: fixed;
     box-sizing: border-box;
     z-index: 999;
-    border: solid 1px rgba($dark, .2);
+    border: solid 1px rgba($neko-context-menu-color, .2);
     border-radius: .2rem;
     -webkit-font-smoothing: antialiased;
     font-size: .875rem;
@@ -23,8 +24,8 @@ $dark: #343A40;
     .content {
         min-width: 100px;
         position: relative;
-        background-color: #fff;
-        color: $dark;
+        background-color: $neko-context-menu-background-color;
+        color: $neko-context-menu-color;
         box-sizing: border-box;
         min-width: 200px;
 

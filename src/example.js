@@ -1,81 +1,46 @@
-import NekoContextMenu from './neko-context-menu'
+// import NekoContextMenu from './neko-context-menu'
+import NContextMenu, { MenuItem } from './neko-context-menu'
+window.$ = window.JQuery = require('jquery')
+require('./JQuery/jquery-neko-context-menu')
 const randomSentence = require('random-sentence');
 
-const ContextMenu = new NekoContextMenu({
-    selector: '[data-context="main"]',
-    items: [
-        {
-            name: "Add item",
-            callback: function (evt, ui, target) {
-                evt.preventDefault();
-                createItem(target);
-            },
-            icon: 'fas fa-list-ul',
-        },
-        {
-            name: "Add container",
-            callback: function (evt, ui) {
-                evt.preventDefault();
-                createContainer();
-            },
-            icon: 'far fa-plus-square',
-        },
-        {
-            name: "Remove container",
-            callback: function (evt, ui, target) {
-                evt.preventDefault();
-                removeContainer(target, evt);
-            },
-            icon: 'far fa-trash-alt',
+// const targets = document.querySelectorAll('[data-context]')
+
+// targets.forEach(target => {
+//     let contextMenu = new NContextMenu(target)
+
+//     let item = new MenuItem('Title', (evt, target) => console.log("MON TEST", evt, target))
+//     let item2 = new MenuItem('Title 2', (evt, target) => console.log("MON TEST 2", evt, target))
+//     let item3 = new MenuItem('Title 3', (evt, target) => console.log("MON TEST 3", evt, target))
+
+//     contextMenu.add(item)
+//     contextMenu.add(item2)
+//     contextMenu.add(item3)
+
+// })
+
+
+$('[data-context]').NContextmenu([
+    {
+        label: "File",
+        icon: '<i class="far fa-copy"></i>',
+        callback(evt, target, item) {
+            console.log("file", evt, target, item)
         }
-        
-    ]
-});
+    },
+    {
+        label: "Directory",
+        icon: '<i class="far fa-folder"></i>',
+        callback(evt, target, item) {
+            console.log("directory", evt, target, item)
+        }
+    },
+    {
+        label: "Remove",
+        icon: '<i class="far fa-trash-alt"></i>',
+        callback(evt, target, item) {
+            console.log("remove", evt, target, item)
+        }
+    },
+])
 
-function createItem(parent) {
-
-    const p = $('<p></p>')
-    p.addClass('text-dark')
-    p.text(randomSentence({min: 4, max: 9}))
-    $(parent).append(p)
-
-    new NekoContextMenu({
-        selector: p,
-        items: [
-            {
-                name: 'Alert me',
-                icon: 'far fa-bell',
-                callback: function (evt, ui) {
-                    alert('You clicked to the element sentence : ' + ui.text())
-                }
-            },
-            {
-                name: 'Delete',
-                callback: function (evt, ui) {
-                    ui.remove()
-                },
-                icon: 'far fa-trash-alt'
-            }
-        ]
-    })
-
-}
-
-function createContainer() {
-    const div = $('<div></div>')
-    div.attr('data-context', 'main')
-    div.html(`<h1>New container</h1>`)
-    $('body').append(div)
-    ContextMenu.refresh()
-}
-
-function removeContainer(parent, evt) {
-    let elements = ContextMenu.selector.length
-    if (elements > 1) {
-        $(parent).remove()
-        ContextMenu.refresh()
-    } else {
-        alert("C'est le dernier conteneur !")
-    }
-
-}
