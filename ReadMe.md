@@ -31,7 +31,7 @@ With js compiler like WebPack :
 import NContextMenu from 'neko-context-menu'
 
 // JQuery
-import 'jquery-neko-context-menu'
+import 'path/to/jquery-neko-context-menu'
 ```
 
 # Usage
